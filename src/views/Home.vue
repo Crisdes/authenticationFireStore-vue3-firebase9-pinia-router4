@@ -1,8 +1,17 @@
 <template>
-    <div>
-        <h1>Home</h1>
-        <div>{{ userStore.userData?.email }}</div>
-    </div>
+  <div>
+    <h1>Home</h1>
+    <div>{{ userStore.userData?.email }}</div>
+    <ul>
+      <li v-for="item of databaseStore.documents" :key="item.id">
+        {{ item.id }}
+        <br>
+        {{ item.name }}
+        <br>
+        {{ item.short }}
+      </li>
+    </ul>
+  </div>
 </template>
 
 <script setup>
@@ -13,6 +22,11 @@
 // console.log(user);
 // })
 
-import {useUserStore} from '../stores/user'
-const userStore = useUserStore()
+import { useUserStore } from "../stores/user";
+import { useDatabaseStore } from "../stores/database";
+
+const userStore = useUserStore();
+const databaseStore = useDatabaseStore();
+
+databaseStore.getUrls()
 </script>
