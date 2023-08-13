@@ -6,11 +6,17 @@ import { db, auth } from '../../firebaseConfig';
 export const useDatabaseStore = defineStore('database', {
     state: () => ({
         // Función flecha que retorna un array
-        documents: []
+        documents: [],
+        loadingDocs: false
     }),
     actions: {
         // Cada una una de las acciones que modifican documents
         async getUrls() {
+            if (this.documents.length !== 0) {
+                return
+            }
+            
+            this.loadingDocs = true;
             try {
                 // Se debe importar query en base a la libreria lite
                 const q = query(collection(db, 'urls'), where("user", "==", auth.currentUser.uid))
@@ -26,6 +32,7 @@ export const useDatabaseStore = defineStore('database', {
             } catch (error) {
                 console.log(error);
             } finally {
+                this.loadingDocs = false
             }
         }
     }
